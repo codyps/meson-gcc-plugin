@@ -10,7 +10,14 @@ myplugin = shared_module('myplugin',
 	include_directories: plugin_inc
 )
 
-test_1 = executable('test-1', 'test-1.c',
+myplugin_dep = custom_target('myplugin',
+	input: myplugin,
+        output: 'myplugin_dep.h',
+        command: ['echo'],
+        capture: true
+)
+
+test_1 = executable('test-1', 'test-1.c', myplugin_dep,
 	c_args: [ '-fplugin=' + myplugin.full_path() ],
 	native: true,
 )
